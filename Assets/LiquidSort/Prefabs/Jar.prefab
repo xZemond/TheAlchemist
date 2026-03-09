@@ -1157,6 +1157,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1431989730577806, guid: 636501c2e876f9845926878dbee309f1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3777205207931629192}
+    - targetCorrespondingSourceObject: {fileID: 1431989730577806, guid: 636501c2e876f9845926878dbee309f1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8440439833299465801}
     - targetCorrespondingSourceObject: {fileID: 1574509142939646, guid: 636501c2e876f9845926878dbee309f1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1410728008298560408}
@@ -1234,7 +1237,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1642411339069928573}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
   m_Name: 
@@ -1369,6 +1372,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JarContentsTracker
   jarInteriorTrigger: {fileID: 1410728008298560408}
+--- !u!114 &8440439833299465801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642411339069928573}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02d61468f8b77ae4b92c344bc9a600fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.VR::OVRGrabbable
+  m_allowOffhandGrab: 1
+  m_snapPosition: 0
+  m_snapOrientation: 0
+  m_snapOffset: {fileID: 0}
+  m_grabPoints: []
 --- !u!1 &1642558272534326797 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1574509142939646, guid: 636501c2e876f9845926878dbee309f1, type: 3}
