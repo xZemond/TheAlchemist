@@ -63017,7 +63017,6 @@ MonoBehaviour:
   outsideGraceSeconds: 1
   logEverySecond: 1
   logIntervalSeconds: 5
-  logTimer: 0
 --- !u!1 &1404951605
 GameObject:
   m_ObjectHideFlags: 0
@@ -102077,7 +102076,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bb82bd27b53c90478ed52a30684be4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JarContentsTracker
-  marbleContentsCollider: {fileID: 0}
+  jarInteriorTrigger: {fileID: 1410728008867771319}
 --- !u!114 &3777205208099100751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -102090,7 +102089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bb82bd27b53c90478ed52a30684be4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JarContentsTracker
-  marbleContentsCollider: {fileID: 0}
+  jarInteriorTrigger: {fileID: 1410728008130612575}
 --- !u!4 &4067970878874993453
 Transform:
   m_ObjectHideFlags: 0
@@ -103114,7 +103113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bb82bd27b53c90478ed52a30684be4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JarContentsTracker
-  marbleContentsCollider: {fileID: 1410728008867771319}
+  jarInteriorTrigger: {fileID: 1410728008867771319}
 --- !u!54 &8219027138416553069
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -103154,7 +103153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bb82bd27b53c90478ed52a30684be4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JarContentsTracker
-  marbleContentsCollider: {fileID: 1410728008130612575}
+  jarInteriorTrigger: {fileID: 1410728008130612575}
 --- !u!1 &8383921610959334201
 GameObject:
   m_ObjectHideFlags: 0

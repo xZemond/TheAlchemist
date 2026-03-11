@@ -1,40 +1,31 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class JarContentsTracker : MonoBehaviour
 {
-    [SerializeField] private Collider jarInteriorTrigger;
+    public Collider marbleContentsCollider;
 
-    private readonly HashSet<MarbleColor> inside = new HashSet<MarbleColor>();
-
-    public IReadOnlyCollection<MarbleColor> Inside => inside;
-
-    private void Reset()
+    public List<GameObject> GetAllMarbles()
     {
-        jarInteriorTrigger = GetComponent<Collider>();
-    }
+        if (marbleContentsCollider == null)
+        {
+            Debug.LogError($"JarContentsTracker on {gameObject.name} has NO collider assigned!");
+            return new List<GameObject>();
+        }
+        List<GameObject> marbles = new List<GameObject>();
 
-    private void Awake()
-    {
-        if (jarInteriorTrigger == null) jarInteriorTrigger = GetComponent<Collider>();
-        if (jarInteriorTrigger != null && !jarInteriorTrigger.isTrigger)
-            Debug.LogWarning("[JarContentsTracker] jarInteriorTrigger muss IsTrigger=true sein.", this);
-    }
+        Collider[] hits = Physics.OverlapBox(
+            marbleContentsCollider.bounds.center,
+            marbleContentsCollider.bounds.extents,
+            marbleContentsCollider.transform.rotation
+        );
 
-    private void OnTriggerEnter(Collider other)
-    {
-        var mc = other.GetComponentInParent<MarbleColor>();
-        if (mc != null) inside.Add(mc);
-    }
+        foreach (var hit in hits)
+        {
+            if (hit.CompareTag("Marble"))
+                marbles.Add(hit.gameObject);
+        }
 
-    private void OnTriggerExit(Collider other)
-    {
-        var mc = other.GetComponentInParent<MarbleColor>();
-        if (mc != null) inside.Remove(mc);
-    }
-
-    public void CleanupNulls()
-    {
-        inside.RemoveWhere(m => m == null);
+        return marbles;
     }
 }

@@ -676,7 +676,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MarbleSpawner
   marblePrefab: {fileID: 9090426168859305684, guid: b82b0b3567f13c64db7a89c33cddfb4d, type: 3}
   spawnArea: {fileID: 6431963797272666868}
-  marbleParent: {fileID: 0}
+  marbleParent: {fileID: 5727261359836994478}
   spawnInterval: 0.05
   spawnOnStart: 1
   batches:
@@ -1020,6 +1020,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.05, y: 0.3, z: 0.015}
   m_Center: {x: 0, y: 0, z: 0.07}
+--- !u!1 &8572724080064813682
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5727261359836994478}
+  m_Layer: 0
+  m_Name: MarbleContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5727261359836994478
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8572724080064813682}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1639446776798885247}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1643270748990650867
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1113,6 +1144,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4061743728888972, guid: 636501c2e876f9845926878dbee309f1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4254277609193983518}
+    - targetCorrespondingSourceObject: {fileID: 4061743728888972, guid: 636501c2e876f9845926878dbee309f1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5727261359836994478}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1431989730577806, guid: 636501c2e876f9845926878dbee309f1, type: 3}
       insertIndex: -1
@@ -1122,7 +1156,7 @@ PrefabInstance:
       addedObject: {fileID: 3777205207931629192}
     - targetCorrespondingSourceObject: {fileID: 1431989730577806, guid: 636501c2e876f9845926878dbee309f1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 23203409266494905}
+      addedObject: {fileID: 5387913087641806181}
     - targetCorrespondingSourceObject: {fileID: 1574509142939646, guid: 636501c2e876f9845926878dbee309f1, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1410728008298560408}
@@ -1205,8 +1239,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bb82bd27b53c90478ed52a30684be4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JarContentsTracker
-  jarInteriorTrigger: {fileID: 1410728008298560408}
---- !u!114 &23203409266494905
+  marbleContentsCollider: {fileID: 1410728008298560408}
+--- !u!114 &5387913087641806181
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1215,20 +1249,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1642411339069928573}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43f86b14a27b52f4f9298c33015b5c26, type: 3}
+  m_Script: {fileID: 11500000, guid: 75c433012c63d164c94b703103d8a8e1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.Grabbable
-  _transferOnSecondSelection: 0
-  _addNewPointsToFront: 0
-  _forwardElement: {fileID: 0}
-  _oneGrabTransformer: {fileID: 0}
-  _twoGrabTransformer: {fileID: 0}
-  _targetTransform: {fileID: 1639446776798885247}
-  _maxGrabPoints: -1
-  _rigidbody: {fileID: 8219027138248481450}
-  _kinematicWhileSelected: 1
-  _throwWhenUnselected: 1
-  _forceKinematicDisabled: 0
+  m_EditorClassIdentifier: Assembly-CSharp::PinchTeleportJar
+  rightHand: {fileID: 0}
+  leftHand: {fileID: 0}
+  pinchThreshold: 0.7
+  ownJar: {fileID: 3777205207931629192}
+  trackedJar: {fileID: 0}
 --- !u!1 &1642558272534326797 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1574509142939646, guid: 636501c2e876f9845926878dbee309f1, type: 3}
