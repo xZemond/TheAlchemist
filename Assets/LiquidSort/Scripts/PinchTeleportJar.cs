@@ -35,7 +35,7 @@ public class PinchTeleportJar : MonoBehaviour
         TeleportSwitch();
     }
 
-    void TeleportSwitch()
+    public void TeleportSwitch()
     {
         List<GameObject> ownMarbles = ownJar.GetAllMarbles();
         List<GameObject> trackedMarbles = trackedJar.GetAllMarbles();
@@ -43,8 +43,8 @@ public class PinchTeleportJar : MonoBehaviour
         Debug.Log("Own jar marbles: " + ownJar.GetAllMarbles().Count);
         Debug.Log("Tracked jar marbles: " + trackedJar.GetAllMarbles().Count);
 
-        Vector3 ownCenter = ownJar.marbleContentsCollider.bounds.center;
-        Vector3 trackedCenter = trackedJar.marbleContentsCollider.bounds.center;
+        Vector3 ownCenter = ownJar.MarbleContentsCollider.bounds.center;
+        Vector3 trackedCenter = trackedJar.MarbleContentsCollider.bounds.center;
 
         // store relative offsets
         Dictionary<GameObject, Vector3> ownOffsets = new Dictionary<GameObject, Vector3>();

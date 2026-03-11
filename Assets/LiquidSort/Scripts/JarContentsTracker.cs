@@ -5,6 +5,11 @@ public class JarContentsTracker : MonoBehaviour
 {
     public Collider marbleContentsCollider;
 
+    public Collider MarbleContentsCollider
+    {
+        get { return marbleContentsCollider; }
+    }
+
     public List<GameObject> GetAllMarbles()
     {
         if (marbleContentsCollider == null)
