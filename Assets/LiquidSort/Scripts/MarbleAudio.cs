@@ -3,8 +3,10 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSource))]
 public class MarbleAudio : MonoBehaviour
 {
-    [Header("Audio Clips")]
-    public AudioClip[] impactSounds;
+    [Header("Audio Clips (Add your .wav files here)")]
+    public AudioClip[] glassSounds; // Jars and other marbles
+    public AudioClip[] woodSounds;  // Table
+    public AudioClip[] stoneSounds; // Floor
 
     [Header("Collision Settings")]
     public float minimumVelocity = 0.5f;
@@ -19,28 +21,42 @@ public class MarbleAudio : MonoBehaviour
     private void Awake()
     {
         audioSource = GetComponent<AudioSource>();
-        audioSource.spatialBlend = 1.0f; // Makes it 3D sound in VR
+        audioSource.spatialBlend = 1.0f; // Forces 3D sound just in case!
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (Time.time < nextPlayTime || impactSounds.Length == 0) return;
+        if (Time.time < nextPlayTime) return;
 
-        // NEW: Check if it hits the Jar ("Glass") OR another Marble ("Marble")
+        float impactSpeed = collision.relativeVelocity.magnitude;
+        if (impactSpeed < minimumVelocity) return;
+
+        AudioClip[] selectedSounds = null;
+
+        // Determine what material we just hit
         if (collision.gameObject.CompareTag("Glass") || collision.gameObject.CompareTag("Marble"))
         {
-            float impactSpeed = collision.relativeVelocity.magnitude;
+            selectedSounds = glassSounds;
+        }
+        else if (collision.gameObject.CompareTag("Wood"))
+        {
+            selectedSounds = woodSounds;
+        }
+        else if (collision.gameObject.CompareTag("Stone"))
+        {
+            selectedSounds = stoneSounds;
+        }
 
-            if (impactSpeed > minimumVelocity)
-            {
-                float volume = Mathf.InverseLerp(minimumVelocity, maxVolumeVelocity, impactSpeed);
-                AudioClip randomClip = impactSounds[Random.Range(0, impactSounds.Length)];
-                
-                audioSource.pitch = Random.Range(0.9f, 1.1f);
-                audioSource.PlayOneShot(randomClip, volume);
-                
-                nextPlayTime = Time.time + cooldown;
-            }
+        // Play a random sound from the correct material list
+        if (selectedSounds != null && selectedSounds.Length > 0)
+        {
+            float volume = Mathf.InverseLerp(minimumVelocity, maxVolumeVelocity, impactSpeed);
+            AudioClip randomClip = selectedSounds[Random.Range(0, selectedSounds.Length)];
+            
+            audioSource.pitch = Random.Range(0.85f, 1.15f); // Randomize pitch
+            audioSource.PlayOneShot(randomClip, volume);
+            
+            nextPlayTime = Time.time + cooldown;
         }
     }
 }
