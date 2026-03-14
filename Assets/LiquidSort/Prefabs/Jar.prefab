@@ -1067,6 +1067,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Jar
       objectReference: {fileID: 0}
+    - target: {fileID: 1431989730577806, guid: 636501c2e876f9845926878dbee309f1, type: 3}
+      propertyPath: m_TagString
+      value: Glass
+      objectReference: {fileID: 0}
     - target: {fileID: 4061743728888972, guid: 636501c2e876f9845926878dbee309f1, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1257,10 +1261,6 @@ MonoBehaviour:
   pinchThreshold: 0.7
   ownJar: {fileID: 3777205207931629192}
   trackedJar: {fileID: 0}
-  jarLayer:
-    serializedVersion: 2
-    m_Bits: 0
-  rayDistance: 2
 --- !u!1 &1642558272534326797 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1574509142939646, guid: 636501c2e876f9845926878dbee309f1, type: 3}
