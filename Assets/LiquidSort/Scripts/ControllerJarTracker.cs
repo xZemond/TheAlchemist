@@ -18,11 +18,18 @@ public class ControllerJarTrackerCalibrated : MonoBehaviour
 
     [Header("Position Matching")]
     [Tooltip("Maximum allowed distance from previous position to accept new target")]
-    public float maxDelta = 0.15f; 
+    public float maxDelta = 0.15f;
 
     [Header("Startup Options")]
     [Tooltip("During this time (seconds) always use DetachedAnchor")]
     public float startupGraceSeconds = 2f;
+
+    [Header("Jar Offsets")]
+    [Tooltip("Offset from controller to jar center in controller local space")]
+    public Vector3 jarPositionOffset = Vector3.zero;
+
+    [Tooltip("Rotation around Y axis relative to controller")]
+    public float rotationY = 0f;
 
     private Quaternion rotationOffset;
     private float startTime;
@@ -42,7 +49,7 @@ public class ControllerJarTrackerCalibrated : MonoBehaviour
             return;
 
         HandleCalibration(targetAnchor);
-        FollowTarget(targetAnchor);
+        FollowTargetWithOffset(targetAnchor);
     }
 
     // Decide which anchor to use based on position matching
@@ -100,15 +107,23 @@ public class ControllerJarTrackerCalibrated : MonoBehaviour
         Debug.Log("Jar calibration completed.");
     }
 
-    void FollowTarget(Transform target)
+    void FollowTargetWithOffset(Transform target)
     {
-        // --- Smooth rotation ---
-        Quaternion targetRotation = target.rotation * rotationOffset;
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSmooth);
+        // --- Compute world-space pivot ---
+        Vector3 pivotWorld = target.position;
+
+        // --- Compute jar position using offset and Y rotation ---
+        Quaternion controllerRotation = target.rotation;
+        Quaternion yRotation = Quaternion.Euler(0f, rotationY, 0f);
+        Vector3 rotatedOffset = controllerRotation * yRotation * jarPositionOffset;
+        Vector3 targetPosition = pivotWorld + rotatedOffset;
 
         // --- Smooth position ---
-        Vector3 targetPosition = target.position;
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * positionSmooth);
+
+        // --- Smooth rotation ---
+        Quaternion targetRotation = controllerRotation * yRotation * rotationOffset;
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSmooth);
 
         previousPosition = transform.position;
     }
