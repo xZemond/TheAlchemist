@@ -291,8 +291,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MarbleAudio
   glassSounds:
   - {fileID: 8300000, guid: d1575ecbf136b1d4a8ec9c461298a8b5, type: 3}
-  woodSounds: []
-  stoneSounds: []
+  woodSounds:
+  - {fileID: 8300000, guid: b07c3395a0347e74da9452730710a6e7, type: 3}
+  stoneSounds:
+  - {fileID: 8300000, guid: 33c73b9ce3762b34d8f92de6991ae43e, type: 3}
   minimumVelocity: 0.5
   maxVolumeVelocity: 5
   cooldown: 0.05
