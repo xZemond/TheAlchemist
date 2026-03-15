@@ -97763,6 +97763,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: OVR Sample Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5942352356208557289, guid: 90e50ed5da21320459bef15430974648, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5942352356208557291, guid: 90e50ed5da21320459bef15430974648, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
