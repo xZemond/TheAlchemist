@@ -3376,7 +3376,7 @@ Transform:
   - {fileID: 1948046803}
   - {fileID: 720409005}
   - {fileID: 1152015427}
-  - {fileID: 82168972}
+  - {fileID: 1866367665}
   m_Father: {fileID: 1466053877}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &64417501
@@ -3858,37 +3858,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0cfbd6f426c92ad4896fbd4648e2e01b, type: 3}
---- !u!1 &82168971
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 82168972}
-  m_Layer: 0
-  m_Name: EffectAnchor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &82168972
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 82168971}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.185, y: 0.33, z: -0.471}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 58910892}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &82641965
 GameObject:
   m_ObjectHideFlags: 0
@@ -64821,6 +64790,7 @@ GameObject:
   - component: {fileID: 1402889530}
   - component: {fileID: 1402889531}
   - component: {fileID: 1402889532}
+  - component: {fileID: 1402889533}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -64996,10 +64966,23 @@ MonoBehaviour:
   rightHandJar: {fileID: 1860742536}
   shelfEffectPrefab: {fileID: 100004, guid: a92a42a2125977345a54e9b8306b5880, type: 3}
   shelfEffectSize: 0.1
-  shelfEffectPosition: {fileID: 82168972}
+  shelfEffectPosition: {fileID: 1866367665}
   trackedJarEffectPrefab: {fileID: 100004, guid: a92a42a2125977345a54e9b8306b5880, type: 3}
-  trackedEffectSize: 0.01
-  effectLifetime: 2
+  trackedEffectSize: 0.001
+  effectLifetime: 3
+--- !u!114 &1402889533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1402889527}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfaca1ba70be1d94a99a608803dcf489, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LoopingEffect
+  effectPrefab: {fileID: 100004, guid: 96536afb634b32043bb988d4576053d3, type: 3}
 --- !u!1 &1404951605
 GameObject:
   m_ObjectHideFlags: 0
@@ -88937,6 +88920,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4425874899348998, guid: e3b08ca4cbd32534ea8d0b5e519709e2, type: 3}
   m_PrefabInstance: {fileID: 905031333}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1866367664
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1866367665}
+  m_Layer: 0
+  m_Name: EffectAnchor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1866367665
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866367664}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.693, y: -0.016, z: -0.466}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 58910892}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1867997473
 GameObject:
   m_ObjectHideFlags: 0
@@ -97797,10 +97811,6 @@ PrefabInstance:
     - target: {fileID: 5942352356208557289, guid: 90e50ed5da21320459bef15430974648, type: 3}
       propertyPath: m_Name
       value: OVR Sample Canvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 5942352356208557289, guid: 90e50ed5da21320459bef15430974648, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5942352356208557291, guid: 90e50ed5da21320459bef15430974648, type: 3}
       propertyPath: m_PresetInfoIsWorld

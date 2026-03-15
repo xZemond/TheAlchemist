@@ -15,12 +15,17 @@ public class JarTeleportManager : MonoBehaviour
     public JarContentsTracker leftHandJar;
     public JarContentsTracker rightHandJar;
 
-    [Header("Teleport Effects")]
-    public GameObject teleportEffectPrefab;
-    public float effectLifetime = 2f;
-    public float teleportEffectScale = 0.1f;
+    public GameObject shelfEffectPrefab;      // Big effect at shelf jars
+    public float shelfEffectSize = 0.1f;
+    public  Transform shelfEffectPosition;
+
+    public GameObject trackedJarEffectPrefab; // Small effect at tracked jars
+    public float trackedEffectSize = 0.05f;
+
+    public float effectLifetime = 3f;         // lifetime for both effects
 
     private bool canTrigger = true;
+
 
     // Stores the marbles and their final positions
     private Dictionary<GameObject, Vector3> teleportQueue = new Dictionary<GameObject, Vector3>();
@@ -35,8 +40,14 @@ public class JarTeleportManager : MonoBehaviour
             if (canTrigger)
             {
                 canTrigger = false;
+
+                SpawnTeleportEffect(shelfEffectPosition.position, shelfEffectPrefab, shelfEffectSize);
+
                 QueueShuffleAllShelves();
                 ExecuteTeleports();
+
+                // Spawn small effects at left/right hand jars
+
             }
         }
         else if (rightSnap)
@@ -44,8 +55,17 @@ public class JarTeleportManager : MonoBehaviour
             if (canTrigger)
             {
                 canTrigger = false;
+                Vector3 effectPos = leftHandJar.transform.position;
+                effectPos.y -= 0.1f;  // Move down by 0.1 units
+
+                SpawnTeleportEffect(effectPos, trackedJarEffectPrefab, trackedEffectSize);
+                SpawnTeleportEffect(shelfEffectPosition.position, shelfEffectPrefab, shelfEffectSize);
+
                 QueueSnapRightHand();
                 ExecuteTeleports();
+
+                // Small effect at left hand jar (receiving?) 
+
             }
         }
         else if (leftSnap)
@@ -53,8 +73,19 @@ public class JarTeleportManager : MonoBehaviour
             if (canTrigger)
             {
                 canTrigger = false;
+                // Small effect at right hand jar
+
+                canTrigger = false;
+                Vector3 effectPos = rightHandJar.transform.position;
+                effectPos.y -= 0.1f;  // Move down by 0.1 units
+
+                SpawnTeleportEffect(effectPos, trackedJarEffectPrefab, trackedEffectSize);
+                SpawnTeleportEffect(shelfEffectPosition.position, shelfEffectPrefab, shelfEffectSize);
+
                 QueueSnapLeftHand();
                 ExecuteTeleports();
+
+
             }
         }
         else
@@ -140,8 +171,6 @@ public class JarTeleportManager : MonoBehaviour
         Vector3 toCenter = toJar.MarbleContentsCollider.bounds.center;
 
         // Spawn teleport effects once per jar teleport
-        SpawnTeleportEffect(fromCenter);
-        SpawnTeleportEffect(toCenter);
 
         foreach (var m in marbles)
         {
@@ -192,11 +221,12 @@ public class JarTeleportManager : MonoBehaviour
             rb.isKinematic = state;
     }
 
-    void SpawnTeleportEffect(Vector3 position)
+    void SpawnTeleportEffect(Vector3 position, GameObject prefab, float scale)
     {
-        if (teleportEffectPrefab == null) return;
+        if (prefab == null) return;
 
-        GameObject effect = Instantiate(teleportEffectPrefab, position, Quaternion.identity);
+        GameObject effect = Instantiate(prefab, position, Quaternion.identity);
+        effect.transform.localScale = Vector3.one * scale;
         Destroy(effect, effectLifetime);
     }
 }
