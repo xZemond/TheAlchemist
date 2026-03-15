@@ -56,11 +56,12 @@ public class ControllerJarTrackerCalibrated : MonoBehaviour
     Transform GetValidTargetAnchor()
     {
         float elapsed = Time.time - startTime;
+
         Vector3 handPos = HandAnchorDetached != null ? HandAnchorDetached.position : Vector3.zero;
         Vector3 controllerPos = ControllerAnchor != null ? ControllerAnchor.position : Vector3.zero;
 
-        // Startup grace period: always use hand anchor if available 
-        if (elapsed <= startupGraceSeconds)
+        // Startup grace period
+        if (elapsed <= startupGraceSeconds && HandAnchorDetached != null)
             return HandAnchorDetached;
 
         // Hand anchor valid & roughly matching previous position?
@@ -77,7 +78,7 @@ public class ControllerJarTrackerCalibrated : MonoBehaviour
                 return ControllerAnchor;
         }
 
-        // neither roughly matching -> ignore position update
+        // Neither roughly matching → ignore update
         return null;
     }
 
@@ -96,12 +97,18 @@ public class ControllerJarTrackerCalibrated : MonoBehaviour
     public void Calibrate(Transform target)
     {
         Quaternion targetRot = target.rotation;
-        Vector3 forwardProjected = Vector3.ProjectOnPlane(targetRot * Vector3.forward, Vector3.up);
+
+        Vector3 forwardProjected =
+            Vector3.ProjectOnPlane(targetRot * Vector3.forward, Vector3.up);
+
         if (forwardProjected.sqrMagnitude < 0.001f)
             forwardProjected = Vector3.forward;
 
-        Quaternion desiredJarRot = Quaternion.LookRotation(forwardProjected, Vector3.up);
+        Quaternion desiredJarRot =
+            Quaternion.LookRotation(forwardProjected, Vector3.up);
+
         rotationOffset = Quaternion.Inverse(targetRot) * desiredJarRot;
+
         calibrated = true;
 
         Debug.Log("Jar calibration completed.");
@@ -109,22 +116,51 @@ public class ControllerJarTrackerCalibrated : MonoBehaviour
 
     void FollowTargetWithOffset(Transform target)
     {
-        // --- Compute world-space pivot ---
+        // Pivot position
         Vector3 pivotWorld = target.position;
 
-        // --- Compute jar position using offset and Y rotation ---
+        // Compute jar offset
         Quaternion controllerRotation = target.rotation;
         Quaternion yRotation = Quaternion.Euler(0f, rotationY, 0f);
-        Vector3 rotatedOffset = controllerRotation * yRotation * jarPositionOffset;
+
+        Vector3 rotatedOffset =
+            controllerRotation * yRotation * jarPositionOffset;
+
         Vector3 targetPosition = pivotWorld + rotatedOffset;
 
-        // --- Smooth position ---
-        transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * positionSmooth);
+        // Smooth position
+        transform.position = Vector3.Lerp(
+            transform.position,
+            targetPosition,
+            Time.deltaTime * positionSmooth
+        );
 
-        // --- Smooth rotation ---
-        Quaternion targetRotation = controllerRotation * yRotation * rotationOffset;
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSmooth);
+        // Smooth rotation
+        Quaternion targetRotation =
+            controllerRotation * yRotation * rotationOffset;
+
+        transform.rotation = Quaternion.Slerp(
+            transform.rotation,
+            targetRotation,
+            Time.deltaTime * rotationSmooth
+        );
 
         previousPosition = transform.position;
+    }
+
+    // ------------------------------
+    // Reset baseline after scene recalibration
+    // ------------------------------
+
+    public void ResetTrackingBaseline()
+    {
+        previousPosition = transform.position;
+    }
+
+    // Force resync to a specific anchor
+    public void ForceResync(Transform anchor)
+    {
+        if (anchor != null)
+            previousPosition = anchor.position;
     }
 }
