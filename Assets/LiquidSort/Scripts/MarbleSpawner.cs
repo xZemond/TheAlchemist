@@ -27,13 +27,6 @@ public class MarbleSpawner : MonoBehaviour
     [Header("Batches")]
     [SerializeField] private List<MarbleBatch> batches = new List<MarbleBatch>();
 
-    [Header("Settling / Soft Lock Integration")]
-    [Tooltip("Wenn true: nach jedem Batch werden ALLE bisher gespawnten Murmeln für die Batch-Pause 'armed' (stabilere Layer).")]
-    [SerializeField] private bool stabilizePreviousBatches = true;
-
-    [Tooltip("Optional: Nach der Batch-Pause SoftLock() erzwingen (kein HardLock). Hilft bei sehr wackligen Layern.")]
-    [SerializeField] private bool forceSoftLockAfterBatch = true;
-
     private readonly List<GameObject> spawnedMarbles = new List<GameObject>();
     private Coroutine spawnRoutine;
 
@@ -69,7 +62,9 @@ public class MarbleSpawner : MonoBehaviour
         {
             MarbleBatch batch = batches[b];
             if (batch == null || batch.count <= 0) continue;
-            
+
+            // Keep track of this batch's marbles
+            List<GameObject> currentBatchMarbles = new List<GameObject>();
 
             // Spawn this batch
             for (int i = 0; i < batch.count; i++)
@@ -77,18 +72,13 @@ public class MarbleSpawner : MonoBehaviour
                 Vector3 pos = GetRandomPointInBox(spawnArea);
                 GameObject marble = Instantiate(marblePrefab, pos, Random.rotation, marbleParent);
                 spawnedMarbles.Add(marble);
+                currentBatchMarbles.Add(marble);
 
                 var mc = marble.GetComponent<MarbleColor>();
                 if (mc != null) mc.colorId = batch.colorId;
 
-
-                // Material setzen
+                // Set material
                 ApplyMaterialShared(marble, batch.material);
-
-                // Während dem Spawnen NICHT locken
-                var settler = marble.GetComponent<MarbleSettler>();
-                if (settler != null)
-                    settler.Disarm();
 
                 if (spawnInterval > 0f)
                     yield return new WaitForSeconds(spawnInterval);
@@ -96,52 +86,23 @@ public class MarbleSpawner : MonoBehaviour
                     yield return null;
             }
 
-            // Pause zwischen Farben = Settling-Fenster
+            // Pause between layers
             float interval = Mathf.Max(0f, batch.delayAfterBatch);
-
-            if (interval > 0f && stabilizePreviousBatches)
-            {
-                // Alle bisherigen Marbles "arm"en, damit sie während der Pause soft-settlen können
-                ArmAllSpawned(interval);
-
+            if (interval > 0f)
                 yield return new WaitForSeconds(interval);
 
-                if (forceSoftLockAfterBatch)
-                    SoftLockAllSpawned();
-            }
-            else if (interval > 0f)
+            // Disable physics after the interval
+            foreach (var marble in currentBatchMarbles)
             {
-                // Nur warten (keine Stabilisierung)
-                yield return new WaitForSeconds(interval);
+                var rb = marble.GetComponent<Rigidbody>();
+                if (rb != null)
+                    rb.isKinematic = true;
             }
         }
 
         spawnRoutine = null;
     }
 
-    private void ArmAllSpawned(float intervalSeconds)
-    {
-        CleanupSpawnedList();
-
-        foreach (var go in spawnedMarbles)
-        {
-            var s = go ? go.GetComponent<MarbleSettler>() : null;
-            if (s != null)
-                s.ArmForInterval(intervalSeconds);
-        }
-    }
-
-    private void SoftLockAllSpawned()
-    {
-        CleanupSpawnedList();
-
-        foreach (var go in spawnedMarbles)
-        {
-            var s = go ? go.GetComponent<MarbleSettler>() : null;
-            if (s != null)
-                s.SoftLock();
-        }
-    }
 
     private void CleanupSpawnedList()
     {
