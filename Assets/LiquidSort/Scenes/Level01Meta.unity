@@ -101705,6 +101705,7 @@ GameObject:
   - component: {fileID: 8219027138416553069}
   - component: {fileID: 369473229}
   - component: {fileID: 8219027138416553070}
+  - component: {fileID: 8219027138416553071}
   m_Layer: 0
   m_Name: RightJar
   m_TagString: Untagged
@@ -101724,6 +101725,7 @@ GameObject:
   - component: {fileID: 8219027137677300357}
   - component: {fileID: 1645578293}
   - component: {fileID: 8219027137677300358}
+  - component: {fileID: 8219027137677300359}
   m_Layer: 0
   m_Name: LeftJar
   m_TagString: Untagged
@@ -103558,6 +103560,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JarContentsTracker
   marbleContentsCollider: {fileID: 1410728008867771319}
+--- !u!114 &8219027137677300359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642411339639143506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fbf527299e7d754c82410b4e25eb1d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JarHaptics
+  hitAmplitude: 0.8
+  hitFrequency: 0.5
+  hitDuration: 0.05
+  cooldown: 0.15
 --- !u!54 &8219027138416553069
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -103598,6 +103616,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::JarContentsTracker
   marbleContentsCollider: {fileID: 1410728008130612575}
+--- !u!114 &8219027138416553071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1642411338901979834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fbf527299e7d754c82410b4e25eb1d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::JarHaptics
+  hitAmplitude: 0.8
+  hitFrequency: 0.5
+  hitDuration: 0.05
+  cooldown: 0.15
 --- !u!1 &8383921610959334201
 GameObject:
   m_ObjectHideFlags: 0
