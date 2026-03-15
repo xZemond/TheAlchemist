@@ -15,6 +15,11 @@ public class JarTeleportManager : MonoBehaviour
     public JarContentsTracker leftHandJar;
     public JarContentsTracker rightHandJar;
 
+    [Header("Teleport Effects")]
+    public GameObject teleportEffectPrefab;
+    public float effectLifetime = 2f;
+    public float teleportEffectScale = 0.1f;
+
     private bool canTrigger = true;
 
     // Stores the marbles and their final positions
@@ -134,14 +139,13 @@ public class JarTeleportManager : MonoBehaviour
         Vector3 fromCenter = fromJar.MarbleContentsCollider.bounds.center;
         Vector3 toCenter = toJar.MarbleContentsCollider.bounds.center;
 
+        // Spawn teleport effects once per jar teleport
+        SpawnTeleportEffect(fromCenter);
+        SpawnTeleportEffect(toCenter);
+
         foreach (var m in marbles)
         {
-            SetKinematic(m, true);
-
-            // Compute offset from the marble’s original position
             Vector3 offset = m.transform.position - fromCenter;
-
-            // Store the final target position in the queue
             teleportQueue[m] = toCenter + offset;
         }
     }
@@ -186,5 +190,13 @@ public class JarTeleportManager : MonoBehaviour
         Rigidbody rb = obj.GetComponent<Rigidbody>();
         if (rb != null)
             rb.isKinematic = state;
+    }
+
+    void SpawnTeleportEffect(Vector3 position)
+    {
+        if (teleportEffectPrefab == null) return;
+
+        GameObject effect = Instantiate(teleportEffectPrefab, position, Quaternion.identity);
+        Destroy(effect, effectLifetime);
     }
 }
