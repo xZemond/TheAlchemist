@@ -147,12 +147,14 @@ The result is displayed on a virtual scoreboard that provides:
 
 | Component              | Version                |
 | ---------------------- | ---------------------- |
-| Unity                  | 2022.3 LTS    |
+| Unity                  | 6000.3.x    |
 | XR Interaction Toolkit | Unity Package Manager  |
 | 48 Particle Effect Pack            | Included package       |
 | BK_AlchemistHouse            | Included package       |
 | TextMeshPro            | Included package       |
 | Device                 | Meta Quest 2 / Quest 3 |
+| OVRCameraRig           | Meta XR Core SDK |
+
 
 ## Setup
 
