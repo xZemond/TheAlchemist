@@ -33,16 +33,7 @@ public class RoomCalibrator : MonoBehaviour
         }
 
         // -------------------------------
-        // 1️Compute translation: move anchor center to jar center
-        // -------------------------------
-        Vector3 anchorCenter = (leftJarAnchor.position + rightJarAnchor.position) * 0.5f;
-        Vector3 jarCenter = (leftJar.position + rightJar.position) * 0.5f;
-        Vector3 translation = jarCenter - anchorCenter;
-
-        roomRoot.position += translation;
-
-        // -------------------------------
-        // 2Compute rotation: align anchor vector to jar vector
+        // Compute rotation first
         // -------------------------------
         Vector3 anchorDir = rightJarAnchor.position - leftJarAnchor.position;
         Vector3 jarDir = rightJar.position - leftJar.position;
@@ -58,8 +49,20 @@ public class RoomCalibrator : MonoBehaviour
 
         Quaternion rotOffset = Quaternion.FromToRotation(anchorDir, jarDir);
 
-        // Rotate room around anchor center
+        Vector3 anchorCenter = (leftJarAnchor.position + rightJarAnchor.position) * 0.5f;
+
+        // Rotate room around current anchor center
         roomRoot.RotateAround(anchorCenter, Vector3.up, rotOffset.eulerAngles.y);
+
+        // -------------------------------
+        // Compute translation AFTER rotation
+        // -------------------------------
+        Vector3 newAnchorCenter = (leftJarAnchor.position + rightJarAnchor.position) * 0.5f;
+        Vector3 jarCenter = (leftJar.position + rightJar.position) * 0.5f;
+
+        Vector3 translation = jarCenter - newAnchorCenter;
+
+        roomRoot.position += translation;
 
         // -------------------------------
         // Reset jar trackers
