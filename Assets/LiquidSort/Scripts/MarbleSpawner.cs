@@ -44,7 +44,13 @@ public class MarbleSpawner : MonoBehaviour
         }
 
         if (spawnOnStart)
-            SpawnMarbles();
+            StartCoroutine(SpawnAfterDelay());
+    }
+
+    IEnumerator SpawnAfterDelay()
+    {
+        yield return new WaitForSeconds(2);
+        SpawnMarbles();
     }
 
     [ContextMenu("Spawn Marbles")]

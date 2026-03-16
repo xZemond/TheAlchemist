@@ -58,7 +58,7 @@ public class JarHaptics : MonoBehaviour
         if (Time.time < nextHapticTime) return;
         nextHapticTime = Time.time + cooldown;
         
-        Debug.Log("Marble ENTERED Jar! Single Pulse Haptics sent.");
+        // Debug.Log("Marble ENTERED Jar! Single Pulse Haptics sent.");
         StartCoroutine(TriggerOVRHaptics());
     }
 
