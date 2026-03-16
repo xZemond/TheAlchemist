@@ -154,6 +154,7 @@ The result is displayed on a virtual scoreboard that provides:
 | TextMeshPro            | Included package       |
 | Device                 | Meta Quest 2 / Quest 3 |
 | OVRCameraRig           | Meta XR Core SDK |
+| OVRManager             | Meta XR Core SDK |
 
 
 ## Setup
