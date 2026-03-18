@@ -85,8 +85,8 @@ public class ScoreEvaluator : MonoBehaviour
 
         // Update TextMeshPro UI
         if (scoreText != null)
-            scoreText.text = $"Score: {targetScore:0.##}%\n" +
-                            $"Average Purity: {averagePurity:0.##}\n" +
-                            $"Inside Ratio: {insideRatio:0.##}";
+            scoreText.text = $"Total Score: {targetScore:0.##}%\n" +
+                            $"Chemical Purity: {averagePurity * 100f:0.##}%\n" +
+                            $"Lost Chemicals: {100f - insideRatio * 100f:0.##}%";
     }
 }

@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-using System.Collections.Generic;
 public class JarTeleportManager : MonoBehaviour
 {
     [Header("Hand References")]
@@ -10,28 +9,44 @@ public class JarTeleportManager : MonoBehaviour
     public OVRHand leftHand;
     public float snapThreshold = 0.7f;
 
+    [Header("Startup Delay")]
+    public float startupDelay = 2f; // delay before teleporting is enabled
+    private bool isReady = false;
+
     [Header("Jar References")]
-    public List<JarContentsTracker> shelfJars;   // Ordered left to right
+    public List<JarContentsTracker> shelfJars;
     public JarContentsTracker leftHandJar;
     public JarContentsTracker rightHandJar;
 
-    public GameObject shelfEffectPrefab;      // Big effect at shelf jars
+    public GameObject shelfEffectPrefab;
     public float shelfEffectSize = 0.1f;
-    public  Transform shelfEffectPosition;
+    public Transform shelfEffectPosition;
 
-    public GameObject trackedJarEffectPrefab; // Small effect at tracked jars
+    public GameObject trackedJarEffectPrefab;
     public float trackedEffectSize = 0.05f;
 
-    public float effectLifetime = 3f;         // lifetime for both effects
+    public float effectLifetime = 3f;
 
     private bool canTrigger = true;
 
-
-    // Stores the marbles and their final positions
     private Dictionary<GameObject, Vector3> teleportQueue = new Dictionary<GameObject, Vector3>();
+
+    void Start()
+    {
+        StartCoroutine(StartupDelayRoutine());
+    }
+
+    IEnumerator StartupDelayRoutine()
+    {
+        yield return new WaitForSeconds(startupDelay);
+        isReady = true;
+    }
 
     void Update()
     {
+        if (!isReady)
+            return;
+
         bool rightSnap = IsFingerSnap(rightHand);
         bool leftSnap = IsFingerSnap(leftHand);
 
@@ -45,9 +60,6 @@ public class JarTeleportManager : MonoBehaviour
 
                 QueueShuffleAllShelves();
                 ExecuteTeleports();
-
-                // Spawn small effects at left/right hand jars
-
             }
         }
         else if (rightSnap)
@@ -55,17 +67,15 @@ public class JarTeleportManager : MonoBehaviour
             if (canTrigger)
             {
                 canTrigger = false;
+
                 Vector3 effectPos = leftHandJar.transform.position;
-                effectPos.y -= 0.1f;  // Move down by 0.1 units
+                effectPos.y -= 0.1f;
 
                 SpawnTeleportEffect(effectPos, trackedJarEffectPrefab, trackedEffectSize);
                 SpawnTeleportEffect(shelfEffectPosition.position, shelfEffectPrefab, shelfEffectSize);
 
                 QueueSnapRightHand();
                 ExecuteTeleports();
-
-                // Small effect at left hand jar (receiving?) 
-
             }
         }
         else if (leftSnap)
@@ -73,19 +83,15 @@ public class JarTeleportManager : MonoBehaviour
             if (canTrigger)
             {
                 canTrigger = false;
-                // Small effect at right hand jar
 
-                canTrigger = false;
                 Vector3 effectPos = rightHandJar.transform.position;
-                effectPos.y -= 0.1f;  // Move down by 0.1 units
+                effectPos.y -= 0.1f;
 
                 SpawnTeleportEffect(effectPos, trackedJarEffectPrefab, trackedEffectSize);
                 SpawnTeleportEffect(shelfEffectPosition.position, shelfEffectPrefab, shelfEffectSize);
 
                 QueueSnapLeftHand();
                 ExecuteTeleports();
-
-
             }
         }
         else
@@ -108,13 +114,9 @@ public class JarTeleportManager : MonoBehaviour
 
     void QueueSnapRightHand()
     {
-        // Most left shelf -> left hand
         QueueTeleportContents(shelfJars[0], leftHandJar);
-
-        // Left hand -> most right shelf
         QueueTeleportContents(leftHandJar, shelfJars[shelfJars.Count - 1]);
 
-        // Other shelf jars -> next jar to the left
         for (int i = 1; i < shelfJars.Count; i++)
         {
             QueueTeleportContents(shelfJars[i], shelfJars[i - 1]);
@@ -125,13 +127,9 @@ public class JarTeleportManager : MonoBehaviour
     {
         int lastIndex = shelfJars.Count - 1;
 
-        // Most right shelf -> right hand
         QueueTeleportContents(shelfJars[lastIndex], rightHandJar);
-
-        // Right hand -> most left shelf
         QueueTeleportContents(rightHandJar, shelfJars[0]);
 
-        // Other shelf jars -> next jar to the right
         for (int i = 0; i < lastIndex; i++)
         {
             QueueTeleportContents(shelfJars[i], shelfJars[i + 1]);
@@ -141,11 +139,8 @@ public class JarTeleportManager : MonoBehaviour
     void QueueShuffleAllShelves()
     {
         int n = shelfJars.Count;
-
-        // Create shuffled copy
         List<JarContentsTracker> shuffled = new List<JarContentsTracker>(shelfJars);
 
-        // Fisher–Yates shuffle
         for (int i = n - 1; i > 0; i--)
         {
             int j = Random.Range(0, i + 1);
@@ -155,7 +150,6 @@ public class JarTeleportManager : MonoBehaviour
             shuffled[j] = temp;
         }
 
-        // Create 1-to-1 mapping
         for (int i = 0; i < n; i++)
         {
             QueueTeleportContents(shelfJars[i], shuffled[i]);
@@ -169,8 +163,6 @@ public class JarTeleportManager : MonoBehaviour
 
         Vector3 fromCenter = fromJar.MarbleContentsCollider.bounds.center;
         Vector3 toCenter = toJar.MarbleContentsCollider.bounds.center;
-
-        // Spawn teleport effects once per jar teleport
 
         foreach (var m in marbles)
         {
@@ -199,26 +191,18 @@ public class JarTeleportManager : MonoBehaviour
         }
 
         teleportQueue.Clear();
-
         StartCoroutine(EnablePhysicsNextFrame(bodies));
     }
 
     IEnumerator EnablePhysicsNextFrame(List<Rigidbody> bodies)
     {
-        yield return new WaitForFixedUpdate(); // wait one physics step
+        yield return new WaitForFixedUpdate();
 
         foreach (var rb in bodies)
         {
             if (rb != null)
                 rb.isKinematic = false;
         }
-    }
-
-    void SetKinematic(GameObject obj, bool state)
-    {
-        Rigidbody rb = obj.GetComponent<Rigidbody>();
-        if (rb != null)
-            rb.isKinematic = state;
     }
 
     void SpawnTeleportEffect(Vector3 position, GameObject prefab, float scale)
